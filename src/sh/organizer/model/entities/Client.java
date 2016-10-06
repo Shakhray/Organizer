@@ -1,16 +1,14 @@
 package sh.organizer.model.entities;
 
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
  * @author Sherhan
  */
 @XmlRootElement(name = "client")
+@XmlType(propOrder = {"name", "position", "organization", "email", "phones"})
 public class Client {
 
     private int id;
@@ -70,7 +68,7 @@ public class Client {
     }
 
     @XmlElement(name = "phone")
-    @XmlElementWrapper
+    @XmlElementWrapper(name = "phones")
     public void setPhones(List<String> phones) {
         this.phones = phones;
     }

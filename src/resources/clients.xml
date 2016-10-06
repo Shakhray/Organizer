@@ -1,13 +1,48 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <clients>
     <client id="1">
         <name>test</name>
         <position>programmer</position>
         <organization>Netcracker</organization>
         <email>1@2.com</email>
+    </client>
+    <client id="2">
+        <name>2</name>
+        <position>2</position>
+        <organization>2</organization>
+        <email>2</email>
         <phones>
-            <phone>999888777</phone>
-            <phone>777222111</phone>
+            <phone>2</phone>
+        </phones>
+    </client>
+    <client id="3">
+        <name>3</name>
+        <position>3</position>
+        <organization>3</organization>
+        <email>3</email>
+        <phones>
+            <phone>3</phone>
+        </phones>
+    </client>
+    <client id="4">
+        <name>4</name>
+        <position>4</position>
+        <organization>4</organization>
+        <email>4</email>
+        <phones>
+            <phone>234</phone>
+            <phone>234234</phone>
+            <phone>123123</phone>
+            <phone>44</phone>
+        </phones>
+    </client>
+    <client id="5">
+        <name>5</name>
+        <position>5</position>
+        <organization>5</organization>
+        <email>5</email>
+        <phones>
+            <phone>5</phone>
         </phones>
     </client>
 </clients>

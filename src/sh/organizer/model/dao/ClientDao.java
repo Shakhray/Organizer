@@ -15,13 +15,31 @@ import java.util.List;
 public class ClientDao {
     private static final String FILE_NAME = "src/resources/clients.xml";
     private Parser xmlParser;
+    private Clients clients;
+    private File xmlFile = new File(FILE_NAME);
 
     public ClientDao() {
         xmlParser = new JaxbParser();
     }
 
-    public List<Client> getAllClients() throws JAXBException {
-        Clients clients = (Clients) xmlParser.getObject(new File(FILE_NAME), Clients.class);
+    public List<Client> getClientsList() throws JAXBException {
+        clients = getClients();
         return clients.getClients();
+    }
+
+    public Clients getClients() throws JAXBException {
+        return (Clients) xmlParser.getObject(xmlFile, Clients.class);
+    }
+
+    public void insertClient(Client newClient) throws JAXBException {
+        getCurrentClients().getClients().add(newClient);
+        xmlParser.saveObject(xmlFile, getCurrentClients());
+    }
+
+    private Clients getCurrentClients() throws JAXBException {
+        if (clients == null) {
+            clients = getClients();
+        }
+        return clients;
     }
 }
