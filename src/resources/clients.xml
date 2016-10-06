@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<clients>
+    <client id="1">
+        <name>test</name>
+        <position>programmer</position>
+        <organization>Netcracker</organization>
+        <email>1@2.com</email>
+        <phones>
+            <phone>999888777</phone>
+            <phone>777222111</phone>
+        </phones>
+    </client>
+</clients>
