@@ -5,6 +5,7 @@ import sh.organizer.model.entities.Client;
 
 import javax.xml.bind.JAXBException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,33 @@ public class OrganizerController {
         List<String> phones = Arrays.asList(clientInfo.get(ClientInfo.PHONES.getDescription()).replace(" ", "").split(","));
         newClient.setPhones(phones);
         clientDao.insertClient(newClient);
+    }
+
+    public String find(String key) throws JAXBException {
+        key = key.toUpperCase();
+        List<Client> clients = clientDao.getClientsList();
+        List<Client> foundClients = new LinkedList<>();
+
+        for (Client client : clients) {
+            if (Integer.toString(client.getId()).toUpperCase().contains(key)
+                    || client.getName().toUpperCase().contains(key)
+                    || client.getOrganization().toUpperCase().contains(key)
+                    || client.getPosition().toUpperCase().contains(key)
+                    || client.getEmail().toUpperCase().contains(key)
+                    || client.getPhones().toString().toUpperCase().contains(key)) {
+                foundClients.add(client);
+            }
+        }
+
+        return prepareResults(foundClients);
+    }
+
+    private String prepareResults(List<Client> foundClients) {
+        StringBuilder result = new StringBuilder();
+        for (Client findClient : foundClients) {
+            result.append(findClient.toString());
+            result.append("\n");
+        }
+        return result.toString();
     }
 }

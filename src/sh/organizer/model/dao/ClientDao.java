@@ -27,7 +27,7 @@ public class ClientDao {
         return clients.getClients();
     }
 
-    public Clients getClients() throws JAXBException {
+    private Clients getClients() throws JAXBException {
         return (Clients) xmlParser.getObject(xmlFile, Clients.class);
     }
 

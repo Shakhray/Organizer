@@ -99,7 +99,8 @@ public class Console {
 
     }
 
-    private void find() {
-
+    private void find() throws JAXBException {
+        System.out.print("Введите слово для поиска: ");
+        System.out.println(organizerController.find(input.nextLine()));
     }
 }

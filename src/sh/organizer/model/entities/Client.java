@@ -2,6 +2,7 @@ package sh.organizer.model.entities;
 
 
 import javax.xml.bind.annotation.*;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -17,6 +18,15 @@ public class Client {
     private String organization;
     private String email;
     private List<String> phones;
+
+    public Client() {
+        id = 0;
+        name = "";
+        position = "";
+        organization = "";
+        email = "";
+        phones = new LinkedList<>();
+    }
 
     public int getId() {
         return id;
@@ -84,5 +94,29 @@ public class Client {
             phonesStr = phonesStr.substring(0, phonesStr.lastIndexOf(", "));
         }
         return data + "phones= " + phonesStr;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!obj.getClass().getCanonicalName().equals(this.getClass().getCanonicalName())) return false;
+
+        Client otherClient = (Client) obj;
+        return id == otherClient.getId()
+                && name.equals(otherClient.getName())
+                && organization.equals(otherClient.getOrganization())
+                && position.equals(otherClient.getPosition())
+                && email.equals(otherClient.getEmail())
+                && phones.equals(otherClient.getPhones());
+    }
+
+    @Override
+    public int hashCode() {
+        return id * 32 + 12
+                + name.hashCode()
+                + organization.hashCode()
+                + position.hashCode()
+                + email.hashCode()
+                + phones.hashCode();
     }
 }
