@@ -29,12 +29,13 @@
         </phones>
     </client>
     <client id="5">
-        <name>5</name>
+        <name>6</name>
         <position>5</position>
         <organization>5</organization>
-        <email>5</email>
+        <email>77</email>
         <phones>
-            <phone>5</phone>
+            <phone>34</phone>
+            <phone>34</phone>
         </phones>
     </client>
 </clients>

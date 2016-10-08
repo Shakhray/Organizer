@@ -55,4 +55,15 @@ public class ClientDao {
     private void saveChanges() throws JAXBException {
         xmlParser.saveObject(xmlFile, getCurrentClients());
     }
+
+    public void update(Client clientToUpdate) throws JAXBException {
+        for (Client client : clientsList()) {
+            if (client.getId() == clientToUpdate.getId()) {
+                clientsList().remove(client);
+                clientsList().add(clientToUpdate);
+                saveChanges();
+                break;
+            }
+        }
+    }
 }

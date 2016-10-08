@@ -73,4 +73,25 @@ public class OrganizerController {
             }
         }
     }
+
+    public boolean update(Map<String, String> clientInfo) throws NumberFormatException, JAXBException {
+        int idToUpdate = Integer.valueOf(clientInfo.get(ClientInfo.ID.getDescription()));
+        for (Client client : clientDao.getClientsList()) {
+            if (client.getId() == idToUpdate) {
+                String name = clientInfo.get(ClientInfo.NAME.getDescription());
+                String organization = clientInfo.get(ClientInfo.ORGANIZATION.getDescription());
+                String position = clientInfo.get(ClientInfo.POSITION.getDescription());
+                String email = clientInfo.get(ClientInfo.EMAIL.getDescription());
+                String phones = clientInfo.get(ClientInfo.PHONES.getDescription());
+                if (!name.isEmpty()) client.setName(name);
+                if (!organization.isEmpty()) client.setOrganization(organization);
+                if (!position.isEmpty()) client.setPosition(position);
+                if (!email.isEmpty()) client.setEmail(email);
+                if (!phones.isEmpty()) client.setPhones(Arrays.asList(phones.replace(" ", "").split(",")));
+                clientDao.update(client);
+                return true;
+            }
+        }
+        return false;
+    }
 }

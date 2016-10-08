@@ -88,8 +88,25 @@ public class Console {
         organizerController.insert(clientInfo);
     }
 
-    private void update() {
-
+    private void update() throws JAXBException {
+        System.out.print("Введите id запии: ");
+        String id = input.nextLine();
+        Map<String, String> clientInfo = new HashMap<>();
+        clientInfo.put(ClientInfo.ID.getDescription(), id);
+        for (ClientInfo info : ClientInfo.values()) {
+            if (!info.equals(ClientInfo.ID)) {
+                System.out.print(info.getDescription() + "=");
+                clientInfo.put(info.getDescription(), input.nextLine());
+            }
+        }
+        try {
+            if (!organizerController.update(clientInfo)) {
+                System.out.println("Запись с id " + clientInfo.get(ClientInfo.ID.getDescription()) + " не найдена.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("id может быть только числом");
+            update();
+        }
     }
 
     private void help() {
