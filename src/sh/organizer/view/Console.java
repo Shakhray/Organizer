@@ -13,7 +13,6 @@ import java.util.Scanner;
  */
 public class Console {
     private OrganizerController organizerController = new OrganizerController();
-    private Printer printer = new Printer();
     private Scanner input = new Scanner(System.in);
     private boolean isItWork = true;
 
@@ -24,15 +23,18 @@ public class Console {
     }
 
     private void doWork() {
-        printer.printCommandLine();
+        printCommandLine();
         try {
             executeCommand();
         } catch (JAXBException e) {
             System.out.println("Внутренняя ошибка");
-            e.printStackTrace();
         } catch (IllegalArgumentException e) {
             System.out.println("Неверная команда");
         }
+    }
+
+    private void printCommandLine() {
+        System.out.print("organizer> ");
     }
 
     private void executeCommand() throws JAXBException {
@@ -66,7 +68,11 @@ public class Console {
     }
 
     private void list() throws JAXBException {
-        printer.printClients(organizerController.list());
+        printResult(organizerController.list());
+    }
+
+    private void printResult(String result) {
+        System.out.println(result.isEmpty() ? "Записей не найдено" : result);
     }
 
     private void stopWork() {
@@ -95,12 +101,18 @@ public class Console {
         System.out.println(result.toString());
     }
 
-    private void delete() {
-
+    private void delete() throws JAXBException {
+        System.out.print("Введите id записи для удаления: ");
+        try {
+            organizerController.delete(input.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("id может быть только числом");
+            delete();
+        }
     }
 
     private void find() throws JAXBException {
         System.out.print("Введите слово для поиска: ");
-        System.out.println(organizerController.find(input.nextLine()));
+        printResult(organizerController.find(input.nextLine()));
     }
 }

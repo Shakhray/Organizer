@@ -7,6 +7,7 @@ import sh.organizer.model.parser.Parser;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,17 +24,11 @@ public class ClientDao {
     }
 
     public List<Client> getClientsList() throws JAXBException {
-        clients = getClients();
-        return clients.getClients();
+        return new LinkedList<>(clientsList());
     }
 
-    private Clients getClients() throws JAXBException {
-        return (Clients) xmlParser.getObject(xmlFile, Clients.class);
-    }
-
-    public void insertClient(Client newClient) throws JAXBException {
-        getCurrentClients().getClients().add(newClient);
-        xmlParser.saveObject(xmlFile, getCurrentClients());
+    private List<Client> clientsList() throws JAXBException {
+        return getCurrentClients().getClients();
     }
 
     private Clients getCurrentClients() throws JAXBException {
@@ -41,5 +36,23 @@ public class ClientDao {
             clients = getClients();
         }
         return clients;
+    }
+
+    private Clients getClients() throws JAXBException {
+        return (Clients) xmlParser.getObject(xmlFile, Clients.class);
+    }
+
+    public void insertClient(Client newClient) throws JAXBException {
+        clientsList().add(newClient);
+        saveChanges();
+    }
+
+    public void delete(Client clientToDelete) throws JAXBException {
+        clientsList().remove(clientToDelete);
+        saveChanges();
+    }
+
+    private void saveChanges() throws JAXBException {
+        xmlParser.saveObject(xmlFile, getCurrentClients());
     }
 }

@@ -15,8 +15,13 @@ import java.util.Map;
 public class OrganizerController {
     private ClientDao clientDao = new ClientDao();
 
-    public List<Client> list() throws JAXBException {
-        return clientDao.getClientsList();
+    public String list() throws JAXBException {
+        StringBuilder result = new StringBuilder();
+        for (Client client : clientDao.getClientsList()) {
+            result.append(client.toString());
+            result.append("\n");
+        }
+        return result.toString();
     }
 
     public void insert(Map<String, String> clientInfo) throws JAXBException {
@@ -57,5 +62,15 @@ public class OrganizerController {
             result.append("\n");
         }
         return result.toString();
+    }
+
+    public void delete(String id) throws NumberFormatException, JAXBException {
+        int idToDelete = Integer.valueOf(id);
+        for (Client client : clientDao.getClientsList()) {
+            if (client.getId() == idToDelete) {
+                clientDao.delete(client);
+                break;
+            }
+        }
     }
 }

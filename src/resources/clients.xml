@@ -5,15 +5,7 @@
         <position>programmer</position>
         <organization>Netcracker</organization>
         <email>1@2.com</email>
-    </client>
-    <client id="2">
-        <name>2</name>
-        <position>2</position>
-        <organization>2</organization>
-        <email>2</email>
-        <phones>
-            <phone>2</phone>
-        </phones>
+        <phones/>
     </client>
     <client id="3">
         <name>3</name>
