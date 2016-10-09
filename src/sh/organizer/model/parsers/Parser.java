@@ -1,4 +1,4 @@
-package sh.organizer.model.parser;
+package sh.organizer.model.parsers;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;

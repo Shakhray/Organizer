@@ -1,6 +1,6 @@
 package sh.organizer.view;
 
-import sh.organizer.controllers.ClientInfo;
+import sh.organizer.controllers.ClientFields;
 import sh.organizer.controllers.OrganizerController;
 
 import javax.xml.bind.JAXBException;
@@ -17,9 +17,14 @@ public class Console {
     private boolean isItWork = true;
 
     public void run() {
+        printHallo();
         while (isItWork) {
             doWork();
         }
+    }
+
+    private void printHallo() {
+        System.out.println("Добро пожаловать в Organizer.\nЧтобы начать работу, введите команду help.\n");
     }
 
     private void doWork() {
@@ -42,6 +47,9 @@ public class Console {
             case LIST:
                 list();
                 break;
+            case FIND:
+                find();
+                break;
             case EXIT:
                 stopWork();
                 break;
@@ -51,14 +59,11 @@ public class Console {
             case UPDATE:
                 update();
                 break;
-            case HELP:
-                help();
-                break;
             case DELETE:
                 delete();
                 break;
-            case FIND:
-                find();
+            case HELP:
+                help();
                 break;
         }
     }
@@ -71,6 +76,11 @@ public class Console {
         printResult(organizerController.list());
     }
 
+    private void find() throws JAXBException {
+        System.out.print("Введите слово для поиска: ");
+        printResult(organizerController.find(input.nextLine()));
+    }
+
     private void printResult(String result) {
         System.out.println(result.isEmpty() ? "Записей не найдено" : result);
     }
@@ -81,32 +91,63 @@ public class Console {
 
     private void insert() throws JAXBException {
         Map<String, String> clientInfo = new HashMap<>();
-        for (ClientInfo info : ClientInfo.values()) {
-            System.out.print(info.getDescription() + "=");
-            clientInfo.put(info.getDescription(), input.nextLine());
-        }
+        fillClientInfoFromConsole(clientInfo);
         organizerController.insert(clientInfo);
     }
 
     private void update() throws JAXBException {
-        System.out.print("Введите id запии: ");
-        String id = input.nextLine();
+        String id = readIdFromConsole();
+        if (id.isEmpty()) return;
+
         Map<String, String> clientInfo = new HashMap<>();
-        clientInfo.put(ClientInfo.ID.getDescription(), id);
-        for (ClientInfo info : ClientInfo.values()) {
-            if (!info.equals(ClientInfo.ID)) {
-                System.out.print(info.getDescription() + "=");
-                clientInfo.put(info.getDescription(), input.nextLine());
+        clientInfo.put(ClientFields.ID.getFieldName(), id);
+        fillClientInfoFromConsole(clientInfo);
+
+        if (!organizerController.update(clientInfo)) {
+            printItemNotFound(id);
+        }
+    }
+
+    private void fillClientInfoFromConsole(Map<String, String> clientInfo) {
+        for (ClientFields field : ClientFields.values()) {
+            if (!field.equals(ClientFields.ID)) {
+                System.out.print(field.getFieldNameRu() + " = ");
+                clientInfo.put(field.getFieldName(), input.nextLine());
             }
         }
-        try {
-            if (!organizerController.update(clientInfo)) {
-                System.out.println("Запись с id " + clientInfo.get(ClientInfo.ID.getDescription()) + " не найдена.");
-            }
-        } catch (NumberFormatException e) {
+    }
+
+    private void delete() throws JAXBException {
+        String id = readIdFromConsole();
+        if (id.isEmpty()) return;
+
+        if (!organizerController.delete(id)) {
+            printItemNotFound(id);
+        }
+    }
+
+    private String readIdFromConsole() {
+        System.out.print("Введите id записи: ");
+        String id = input.nextLine();
+
+        if (!isCorrectId(id)) {
             System.out.println("id может быть только числом");
-            update();
+            id = "";
         }
+
+        return id;
+    }
+
+    private boolean isCorrectId(String id) {
+        try {
+            return Integer.valueOf(id) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void printItemNotFound(String itemId) {
+        System.out.println("Запись с id " + itemId + " не найдена.");
     }
 
     private void help() {
@@ -115,21 +156,6 @@ public class Console {
             result.append(command.toString());
             result.append("\n");
         }
-        System.out.println(result.toString());
-    }
-
-    private void delete() throws JAXBException {
-        System.out.print("Введите id записи для удаления: ");
-        try {
-            organizerController.delete(input.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("id может быть только числом");
-            delete();
-        }
-    }
-
-    private void find() throws JAXBException {
-        System.out.print("Введите слово для поиска: ");
-        printResult(organizerController.find(input.nextLine()));
+        System.out.print(result.toString());
     }
 }

@@ -38,4 +38,22 @@
             <phone>34</phone>
         </phones>
     </client>
+    <client id="6">
+        <name>t</name>
+        <position>t</position>
+        <organization>t</organization>
+        <email>t</email>
+        <phones>
+            <phone>t</phone>
+        </phones>
+    </client>
+    <client id="7">
+        <name>f</name>
+        <position>f</position>
+        <organization>f</organization>
+        <email>f</email>
+        <phones>
+            <phone>f</phone>
+        </phones>
+    </client>
 </clients>
